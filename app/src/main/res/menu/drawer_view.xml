@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior = "single">
 
         <item
             android:id="@+id/I_WifiList"
@@ -23,8 +23,12 @@
             android:id="@+id/I_F3"
             android:title="F3 Building"/>
 
+        <item
+            android:id="@+id/set_origin"
+            android:title="set Origin" />
 
-
+        <item
+            android:id="@+id/coordinates_value"
+            android:title="Coordinates" />
     </group>
-
 </menu>
