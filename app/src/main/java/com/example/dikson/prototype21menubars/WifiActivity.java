@@ -50,10 +50,10 @@ import java.util.List;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class WifiActivity extends AppCompatActivity {
-//-----------------Toolbar---------------------------
+    //-----------------Toolbar---------------------------
     private DrawerLayout drawerLayout;
 
-//-------------------WIFI----------------------------
+    //-------------------WIFI----------------------------
     WifiManager wifiManager;
     String[] availableWifiList, bssidList;
     String timeStamp;
@@ -64,10 +64,9 @@ public class WifiActivity extends AppCompatActivity {
     Spinner spinner;
     boolean isEduroamFiltered = false;
 
-//-------------------Location----------------------
+    //------------------------Location-------------------------
     private final static int ALL_PERMISSIONS_RESULT = 101;
 
-//    TextView tvLatitude, tvLongitude, tvTime;
     LocationManager locationManager;
     Location location;
 
@@ -103,16 +102,17 @@ public class WifiActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
 
                     case R.id.I_WifiList:
+                        //Closes the drawer when item is selected
                         drawerLayout.closeDrawers();
                         break;
 
                     case R.id.I_F3:
                         Intent F3 = new Intent(WifiActivity.this, MainActivity.class);
                         startActivity(F3);
+                        //Closes the drawer when item is selected
                         drawerLayout.closeDrawers();
                         break;
                 }
-                //Closes the drawer when item is selected
                 return true;
             }
         });
@@ -186,17 +186,17 @@ public class WifiActivity extends AppCompatActivity {
         }
     }
 
-//------------------------------Back Button Function------------------------------------------------
+    //------------------------------Back Button Function------------------------------------------------
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
 
         } else
-        super.onBackPressed();
+            super.onBackPressed();
     }
 
-//------------------------------Populate the option menu-------------------------------------------
+    //------------------------------Populate the option menu-------------------------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.options_view, menu);
@@ -204,7 +204,7 @@ public class WifiActivity extends AppCompatActivity {
     }
 
 
-//-------------------------------Functions for app bar's button------------------------------------
+    //-------------------------------Functions for app bar's button------------------------------------
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -213,7 +213,7 @@ public class WifiActivity extends AppCompatActivity {
 //enables the menu button to be clicked
 
             case android.R.id.home:
-                Intent intent = new Intent(WifiActivity.this,MainActivity.class);
+                Intent intent = new Intent(WifiActivity.this, MainActivity.class);
                 startActivity(intent);
                 return true;
 
@@ -229,7 +229,7 @@ public class WifiActivity extends AppCompatActivity {
                 layout.addView(spinner);
 
                 input = new EditText(this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
                 input.setLayoutParams(lp);
                 layout.addView(input);
 
@@ -263,7 +263,7 @@ public class WifiActivity extends AppCompatActivity {
                 layout_1.setOrientation(LinearLayout.VERTICAL);
 
                 TextView Longitude = new TextView(this);
-                LinearLayout.LayoutParams lp_1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams lp_1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
                 Longitude.setLayoutParams(lp_1);
                 layout_1.addView(Longitude);
                 Longitude.setText("Longitude:");
@@ -285,14 +285,14 @@ public class WifiActivity extends AppCompatActivity {
 
     }
 
-//--------------------------------------------Populating the spinner view----------------------------------------------------------------------------
-    public void Spinner_items(){
-        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this,R.array.Conditions,android.R.layout.simple_spinner_item);
+    //--------------------------------------------Populating the spinner view----------------------------------------------------------------------------
+    public void Spinner_items() {
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.Conditions, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
     }
 
-//------------------------------------------------WIFI------------------------------------------------------------
+    //------------------------------------------------WIFI------------------------------------------------------------
     public void scanWifi() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
@@ -364,16 +364,16 @@ public class WifiActivity extends AppCompatActivity {
         listWifi();
     }
 
-//-------------------------------------------Saving Datas----------------------------------------------
+    //-------------------------------------------Saving Datas----------------------------------------------
     public void saveData() {
         //FYP BOOK
         String getRemark;
         String getSpinner;
         StringBuilder sb = new StringBuilder();
         String layoutData = getIntent().getStringExtra("Extra_LayoutData");
-        String gpsData = getIntent().getStringExtra(" Extra_GpsData");
+//        String gpsData = getIntent().getStringExtra(" Extra_GpsData");
         getRemark = input.getText().toString();
-        getSpinner =  spinner.getSelectedItem().toString();
+        getSpinner = spinner.getSelectedItem().toString();
 
 
         try {
@@ -382,7 +382,8 @@ public class WifiActivity extends AppCompatActivity {
             String filePath = file.getAbsolutePath() + "/CollectedData.csv";
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
 
-            sb.append(gpsData + layoutData + "," + timeStamp + "," + getSpinner + getRemark);
+            sb.append(latitude + "," + longitude + ","
+                    + layoutData + "," + timeStamp + "," + getSpinner + getRemark);
             for (int i = 0; i < bssidList.length; i++) {
                 sb.append("," + scanResults.get(i).SSID + " " + scanResults.get(i).BSSID + " " + scanResults.get(i).level);
             }
@@ -397,34 +398,34 @@ public class WifiActivity extends AppCompatActivity {
 
     }
 
-//--------------------------------------Location----------------------------------------------------
+    //--------------------------------------Location----------------------------------------------------
     LocationListener locationListener = new LocationListener() {
-    @Override
-    public void onLocationChanged(Location location) {
-        updateUI(location);
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-        getLocation();
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-        if (locationManager != null) {
-            //stops location updates when location services are disabled
-            locationManager.removeUpdates(this);
+        @Override
+        public void onLocationChanged(Location location) {
+            updateUI(location);
         }
 
-    }
-};
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
 
-    private void getLocation(){
+        @Override
+        public void onProviderEnabled(String s) {
+            getLocation();
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+            if (locationManager != null) {
+                //stops location updates when location services are disabled
+                locationManager.removeUpdates(this);
+            }
+
+        }
+    };
+
+    private void getLocation() {
         try {
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -530,10 +531,3 @@ public class WifiActivity extends AppCompatActivity {
     }
 
 }
-
-
-
-
-
-
-

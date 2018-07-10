@@ -30,8 +30,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 //    Coordinates Variables
     ImageView image1;
 
-    StringBuilder sb;
+    StringBuilder sb, layoutDataSb;
+    String layoutData;
     int x2, y2, x1, y1, xDiff, yDiff;
+    int xPrev, yPrev, x2Prev, y2Prev;
 
     Canvas canvas;
     Bitmap bitmap, bmp, mutedBitmap;
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
                     case R.id.I_WifiList:
                         Intent Wifi = new Intent(MainActivity.this, WifiActivity.class);
+                        Wifi.putExtra("Extra_LayoutData", layoutData);
                         startActivity(Wifi);
                         drawerLayout.closeDrawers();
                         break;
@@ -134,12 +137,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         x2 = (int) event.getX();
         y2 = (int) event.getY();
         int action = event.getAction();
-        int xPrev = 0, yPrev = 0;
 
 
         mutedBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
         canvas = new Canvas(mutedBitmap);
-        image1.setImageBitmap(mutedBitmap);
+
 
         if(setState){
             xDiff = 0;
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
 
             if (x1 > 0 && y1 > 0 && x1 < mutedBitmap.getWidth() && y1 < mutedBitmap.getHeight()) {
+                image1.setImageBitmap(mutedBitmap);
                 canvas.drawCircle(x1, y1, 20, paintOrigin);
                 xPrev = x1;
                 yPrev = y1;
@@ -166,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
         else{
             if (x2 > 0 && y2 > 0 && x2 < mutedBitmap.getWidth() && y2 < mutedBitmap.getHeight()) {
+                image1.setImageBitmap(mutedBitmap);
                 canvas.drawCircle(x1, y1, 20, paintOrigin);
                 canvas.drawCircle(x2, y2, 20, paint);
                 xDiff = x2 - x1;
@@ -173,6 +177,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 sb = new StringBuilder();
                 sb.append("x1: " + x1 + "," + "y1: " + y1 + "\n"
                         + "x2: " + xDiff + "," + "y2: " + yDiff);
+                layoutDataSb = new StringBuilder();
+                layoutDataSb.append(xDiff+ ","+ yDiff);
+                layoutData = layoutDataSb.toString();
             }
         }
         return true;
