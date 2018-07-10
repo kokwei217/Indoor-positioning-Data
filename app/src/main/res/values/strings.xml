@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Prototype21(MenuBars)</string>
+
+    <string-array name="Conditions">
+
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+        <item>insert item</item>
+
+    </string-array>
+
+
+</resources>
