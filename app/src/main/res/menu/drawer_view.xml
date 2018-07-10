@@ -8,6 +8,18 @@
 
 
         <item
+            android:id="@+id/campus"
+            android:title="Campus Map"/>
+
+        <item
+            android:id="@+id/malaysia"
+            android:title="Malaysia"/>
+
+        <item
+            android:id="@+id/ioi"
+            android:title="ioi"/>
+
+        <item
             android:id="@+id/I_F3"
             android:title="F3 Building"/>
 
