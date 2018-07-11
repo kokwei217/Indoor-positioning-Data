@@ -26,10 +26,11 @@
             android:scaleType="fitXY"/>
 
         <Button
-            android:layout_width="60dp"
-            android:layout_height="100dp"
+            android:id="@+id/transparent_btn"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:alpha="0.01"/>
+            android:alpha="0.001"/>
 
 
     </android.support.constraint.ConstraintLayout>

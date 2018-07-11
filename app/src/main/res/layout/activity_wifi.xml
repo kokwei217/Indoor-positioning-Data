@@ -16,14 +16,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>\
+
+        <EditText
+            android:id="@+id/wifi_ET_X"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Insert X "
+            app:layout_constraintTop_toBottomOf="@id/T_WifiTools"
+            android:layout_marginTop="55dp"
+            android:inputType="number"
+            />
+
+
+        <EditText
+            android:id="@+id/wifi_ET_Y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Insert Y"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="55dp"
+            android:inputType="number"
+            />
+
+
+        <EditText
+            android:id="@+id/wifi_ET_Z"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Insert Z"
+            android:layout_marginStart="220dp"
+            android:layout_marginTop="55dp"
+            android:inputType="number"
+            />
 
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/T_WifiTools"
-            android:layout_marginTop="55dp"/>
+            app:layout_constraintTop_toBottomOf="@id/wifi_ET_X"
+            android:layout_marginTop="110dp"/>
 
     </FrameLayout>
 
