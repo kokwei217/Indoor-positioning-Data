@@ -78,6 +78,8 @@ public class WifiActivity extends AppCompatActivity {
 
     boolean canGetLocation = true;
 
+    TextView LongitudeValue,LatitudeValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -257,31 +259,41 @@ public class WifiActivity extends AppCompatActivity {
                 return true;
 
             case R.id.I_GPS:
-                AlertDialog.Builder alertDialog_1 = new AlertDialog.Builder(this);
-                alertDialog_1.setTitle("GPS Information");
+                AlertDialog.Builder GPSDialog = new AlertDialog.Builder(this);
+                GPSDialog.setTitle("GPS Information");
 
-                LinearLayout layout_1 = new LinearLayout(this);
-                layout_1.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout layout_GPS = new LinearLayout(this);
+                layout_GPS.setOrientation(LinearLayout.VERTICAL);
 
                 TextView Longitude = new TextView(this);
-                LinearLayout.LayoutParams lp_1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                Longitude.setLayoutParams(lp_1);
-                layout_1.addView(Longitude);
+                layout_GPS.addView(Longitude);
                 Longitude.setText("Longitude:");
 
-                TextView LongitudeValue = new TextView(this);
-                layout_1.addView(LongitudeValue);
+                LongitudeValue = new TextView(this);
+                layout_GPS.addView(LongitudeValue);
                 LongitudeValue.setText(Double.toString(longitude));
 
-                alertDialog_1.setView(layout_1);
 
-                alertDialog_1.create().show();
+                TextView Latitude = new TextView(this);
+                layout_GPS.addView(Latitude);
+                Latitude.setText("Latitude:");
+
+                LatitudeValue = new TextView(this);
+                layout_GPS.addView(LatitudeValue);
+                LatitudeValue.setText(Double.toString(latitude));
+
+                GPSDialog.setView(layout_GPS);
+
+                GPSDialog.create().show();
+
 
 
                 return true;
 
 
         }
+        updateUI(location);
+
         return super.onOptionsItemSelected(item);
 
     }
@@ -472,6 +484,7 @@ public class WifiActivity extends AppCompatActivity {
     public void updateUI(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+
 //        tvTime.setText(DateFormat.getTimeInstance().format(location.getTime()));
     }
 
