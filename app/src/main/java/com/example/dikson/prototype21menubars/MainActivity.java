@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 //    Drawer Variable
     private DrawerLayout drawerLayout;
 
+//    Navigation variable
+    Menu menu;
+    NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         drawerLayout = findViewById(R.id.DL_MainMenuBar);
 
-        NavigationView navigationView = findViewById(R.id.NV_MainLists);
+        navigationView = findViewById(R.id.NV_MainLists);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -91,8 +95,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 switch (menuItem.getItemId()) {
 
                     case R.id.I_F3:
+                        setState = true;
                         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.f3_map);
-                        Toast.makeText(MainActivity.this, "Ground Floor", Toast.LENGTH_SHORT).show();
                         drawerLayout.closeDrawers();
                         break;
 
@@ -104,19 +108,25 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                         break;
 
                     case R.id.ioi:
+                        setState = true;
                         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ioi_layout);
                         drawerLayout.closeDrawers();
                         break;
 
                     case R.id.malaysia:
+                        setState = true;
                         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.malaysia_map);
                         drawerLayout.closeDrawers();
                         break;
 
                     case R.id.campus:
-                        drawerLayout.closeDrawers();
+                        setState = true;
                         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.campus_map);
-                        Toast.makeText(MainActivity.this, "Level 1", Toast.LENGTH_SHORT).show();
+                        drawerLayout.closeDrawers();
+                        break;
+
+                    case R.id.set_origin:
+                        setState = true;
                         drawerLayout.closeDrawers();
                         break;
                 }
@@ -180,6 +190,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 layoutDataSb = new StringBuilder();
                 layoutDataSb.append(xDiff+ ","+ yDiff);
                 layoutData = layoutDataSb.toString();
+
+                menu = navigationView.getMenu();
+                MenuItem coordinates = menu.findItem(R.id.coordinates_value);
+                coordinates.setTitle(layoutDataSb.toString());
             }
         }
         return true;

@@ -21,7 +21,8 @@
 
         <item
             android:id="@+id/I_GPS"
-            android:title="Longitude and Latitude" />
+            android:title="Longitude and Latitude"
+            app:showAsAction="never"/>
 
 
 
