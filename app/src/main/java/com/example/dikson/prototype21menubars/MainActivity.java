@@ -59,13 +59,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         screenHeight = displayMetrics.heightPixels;
 
         image1 = findViewById(R.id.layout);
+        Button btn = findViewById(R.id.transparent_btn);
+        btn.setBackgroundColor(Color.TRANSPARENT);
 
         paint = new Paint();
         paint.setColor(Color.RED);
         paintOrigin = new Paint();
         paintOrigin.setColor(Color.BLACK);
 
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.f3_map);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.f3a);
         bitmapWidth = bitmap.getWidth();
         bitmapHeight = bitmap.getHeight();
 
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     case R.id.I_F3A:
                         z = 0;
                         setState = true;
-                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.f3_map);
+                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.f3a);
                         drawerLayout.closeDrawers();
                         break;
 

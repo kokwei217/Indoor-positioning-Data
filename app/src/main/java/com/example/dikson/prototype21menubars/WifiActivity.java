@@ -370,11 +370,22 @@ public class WifiActivity extends AppCompatActivity {
         //FYP BOOK
         String getRemark;
         String getSpinner;
+
+        String x, y, z;
+        EditText ET_x, ET_y, ET_z;
+        ET_x = findViewById(R.id.wifi_ET_X);
+        ET_y = findViewById(R.id.wifi_ET_Y);
+        ET_z = findViewById(R.id.wifi_ET_Z);
+        x = ET_x.getText().toString();
+        y = ET_y.getText().toString();
+        z = ET_z.getText().toString();
+
         StringBuilder sb = new StringBuilder();
         String layoutData = getIntent().getStringExtra("Extra_LayoutData");
 //        String gpsData = getIntent().getStringExtra(" Extra_GpsData");
         getRemark = input.getText().toString();
         getSpinner = spinner.getSelectedItem().toString();
+
 
 
         try {
@@ -383,8 +394,10 @@ public class WifiActivity extends AppCompatActivity {
             String filePath = file.getAbsolutePath() + "/CollectedData.csv";
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
 
-            sb.append(latitude + "," + longitude + ","
-                    + layoutData + "," + timeStamp + "," + getSpinner + getRemark);
+
+            sb.append(latitude + "," + longitude + "," + x + "," + y +","
+                    + z + "," + timeStamp + "," + getSpinner + getRemark);
+
             for (int i = 0; i < bssidList.length; i++) {
                 sb.append("," + scanResults.get(i).SSID + " " + scanResults.get(i).BSSID + " " + scanResults.get(i).level);
             }
