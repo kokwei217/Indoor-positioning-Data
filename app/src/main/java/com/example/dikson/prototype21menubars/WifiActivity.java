@@ -106,7 +106,7 @@ public class WifiActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         break;
 
-                    case R.id.I_F3:
+                    case R.id.I_F3A:
                         Intent F3 = new Intent(WifiActivity.this, MainActivity.class);
                         startActivity(F3);
                         //Closes the drawer when item is selected
