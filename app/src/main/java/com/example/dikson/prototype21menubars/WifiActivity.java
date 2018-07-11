@@ -62,7 +62,7 @@ public class WifiActivity extends AppCompatActivity {
     Runnable runnable;
     EditText input;
     Spinner spinner;
-    boolean isEduroamFiltered = false;
+    boolean isEduroamFiltered = true;
 
     //------------------------Location-------------------------
     private final static int ALL_PERMISSIONS_RESULT = 101;
@@ -106,7 +106,7 @@ public class WifiActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         break;
 
-                    case R.id.I_F3:
+                    case R.id.I_F3A:
                         Intent F3 = new Intent(WifiActivity.this, MainActivity.class);
                         startActivity(F3);
                         //Closes the drawer when item is selected
@@ -253,6 +253,7 @@ public class WifiActivity extends AppCompatActivity {
 
             case R.id.I_ListAvailable:
                 isEduroamFiltered = false;
+                scanWifi();
                 return true;
 
             case R.id.I_GPS:
@@ -369,11 +370,22 @@ public class WifiActivity extends AppCompatActivity {
         //FYP BOOK
         String getRemark;
         String getSpinner;
+
+        String x, y, z;
+        EditText ET_x, ET_y, ET_z;
+        ET_x = findViewById(R.id.wifi_ET_X);
+        ET_y = findViewById(R.id.wifi_ET_Y);
+        ET_z = findViewById(R.id.wifi_ET_Z);
+        x = ET_x.getText().toString();
+        y = ET_y.getText().toString();
+        z = ET_z.getText().toString();
+
         StringBuilder sb = new StringBuilder();
         String layoutData = getIntent().getStringExtra("Extra_LayoutData");
 //        String gpsData = getIntent().getStringExtra(" Extra_GpsData");
         getRemark = input.getText().toString();
         getSpinner = spinner.getSelectedItem().toString();
+
 
 
         try {
@@ -382,8 +394,10 @@ public class WifiActivity extends AppCompatActivity {
             String filePath = file.getAbsolutePath() + "/CollectedData.csv";
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
 
-            sb.append(latitude + "," + longitude + ","
-                    + layoutData + "," + timeStamp + "," + getSpinner + getRemark);
+
+            sb.append(latitude + "," + longitude + "," + x + "," + y +","
+                    + z + "," + timeStamp + "," + getSpinner + getRemark);
+
             for (int i = 0; i < bssidList.length; i++) {
                 sb.append("," + scanResults.get(i).SSID + " " + scanResults.get(i).BSSID + " " + scanResults.get(i).level);
             }

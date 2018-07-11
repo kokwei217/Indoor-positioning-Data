@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     StringBuilder sb, layoutDataSb;
     String layoutData;
-    int x2, y2, x1, y1, xDiff, yDiff;
+    int x2, y2, x1, y1, xDiff, yDiff, z = 0;
     int xPrev, yPrev, x2Prev, y2Prev;
 
     Canvas canvas;
@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 //    Drawer Variable
     private DrawerLayout drawerLayout;
 
+//    Navigation variable
+    Menu menu;
+    NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,13 +59,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         screenHeight = displayMetrics.heightPixels;
 
         image1 = findViewById(R.id.layout);
+        Button btn = findViewById(R.id.transparent_btn);
+        btn.setBackgroundColor(Color.TRANSPARENT);
 
         paint = new Paint();
         paint.setColor(Color.RED);
         paintOrigin = new Paint();
         paintOrigin.setColor(Color.BLACK);
 
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ioi_layout);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.f3a);
         bitmapWidth = bitmap.getWidth();
         bitmapHeight = bitmap.getHeight();
 
@@ -82,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         drawerLayout = findViewById(R.id.DL_MainMenuBar);
 
-        NavigationView navigationView = findViewById(R.id.NV_MainLists);
+        navigationView = findViewById(R.id.NV_MainLists);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -90,9 +96,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 menuItem.setChecked(true);
                 switch (menuItem.getItemId()) {
 
-                    case R.id.I_F3:
-                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.f3_map);
-                        Toast.makeText(MainActivity.this, "Ground Floor", Toast.LENGTH_SHORT).show();
+                    case R.id.I_F3A:
+                        z = 0;
+                        setState = true;
+                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.f3a);
                         drawerLayout.closeDrawers();
                         break;
 
@@ -103,20 +110,22 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                         drawerLayout.closeDrawers();
                         break;
 
-                    case R.id.ioi:
-                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ioi_layout);
+                    case R.id.I_F3B:
+                        z = 1;
+                        setState = true;
+                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.f3b);
                         drawerLayout.closeDrawers();
                         break;
 
-                    case R.id.malaysia:
-                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.malaysia_map);
+                    case R.id.I_F3C:
+                        z = 2;
+                        setState = true;
+                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.f3c);
                         drawerLayout.closeDrawers();
                         break;
 
-                    case R.id.campus:
-                        drawerLayout.closeDrawers();
-                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.campus_map);
-                        Toast.makeText(MainActivity.this, "Level 1", Toast.LENGTH_SHORT).show();
+                    case R.id.set_origin:
+                        setState = true;
                         drawerLayout.closeDrawers();
                         break;
                 }
@@ -178,8 +187,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 sb.append("x1: " + x1 + "," + "y1: " + y1 + "\n"
                         + "x2: " + xDiff + "," + "y2: " + yDiff);
                 layoutDataSb = new StringBuilder();
-                layoutDataSb.append(xDiff+ ","+ yDiff);
+                layoutDataSb.append(xDiff+ ","+ yDiff + "," + z);
                 layoutData = layoutDataSb.toString();
+
+                menu = navigationView.getMenu();
+                MenuItem coordinates = menu.findItem(R.id.coordinates_value);
+                coordinates.setTitle(layoutDataSb.toString());
             }
         }
         return true;
