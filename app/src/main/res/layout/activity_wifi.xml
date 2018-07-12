@@ -25,7 +25,6 @@
             android:hint="Insert X "
             app:layout_constraintTop_toBottomOf="@id/T_WifiTools"
             android:layout_marginTop="55dp"
-            android:inputType="number"
             />
 
 
@@ -36,7 +35,6 @@
             android:hint="Insert Y"
             android:layout_marginStart="110dp"
             android:layout_marginTop="55dp"
-            android:inputType="number"
             />
 
 
@@ -47,7 +45,6 @@
             android:hint="Insert Z"
             android:layout_marginStart="220dp"
             android:layout_marginTop="55dp"
-            android:inputType="number"
             />
 
         <ListView

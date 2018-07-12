@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "458072434105",
+    "firebase_url": "https://prototype21menubars2.firebaseio.com",
+    "project_id": "prototype21menubars2",
+    "storage_bucket": "prototype21menubars2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458072434105:android:93e3759411363ad2",
+        "android_client_info": {
+          "package_name": "com.example.dikson.prototype21menubars"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "458072434105-nunr1c7o099c8ls44mrhk7d5co7rdrip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dikson.prototype21menubars",
+            "certificate_hash": "6223da813be2fa663becc5b5c2697c25c3abfb9e"
+          }
+        },
+        {
+          "client_id": "458072434105-8erb984p3h2uul5s3rgp8lc344eivtu8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2AeBhIgC2mIfv26z-DyaeYvLjBiZsf5I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458072434105-8erb984p3h2uul5s3rgp8lc344eivtu8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

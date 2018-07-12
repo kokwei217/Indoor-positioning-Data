@@ -106,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     case R.id.I_WifiList:
                         Intent Wifi = new Intent(MainActivity.this, WifiActivity.class);
                         Wifi.putExtra("Extra_LayoutData", layoutData);
+                        Wifi.putExtra("originX", x1);
+                        Wifi.putExtra("originY" , y1);
+                        Wifi.putExtra("originZ" , z);
                         startActivity(Wifi);
                         drawerLayout.closeDrawers();
                         break;

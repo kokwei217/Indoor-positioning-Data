@@ -57,6 +57,7 @@ public class WifiActivity extends AppCompatActivity {
     WifiManager wifiManager;
     String[] availableWifiList, bssidList;
     String timeStamp;
+    StringBuilder wifiSB;
     Handler handler;
     List<ScanResult> scanResults;
     Runnable runnable;
@@ -215,8 +216,7 @@ public class WifiActivity extends AppCompatActivity {
 //enables the menu button to be clicked
 
             case android.R.id.home:
-                Intent intent = new Intent(WifiActivity.this, MainActivity.class);
-                startActivity(intent);
+                onBackPressed();
                 return true;
 
             case R.id.I_Comment:
@@ -281,16 +281,9 @@ public class WifiActivity extends AppCompatActivity {
                 LatitudeValue = new TextView(this);
                 layout_GPS.addView(LatitudeValue);
                 LatitudeValue.setText(Double.toString(latitude));
-
                 GPSDialog.setView(layout_GPS);
-
                 GPSDialog.create().show();
-
-
-
                 return true;
-
-
         }
         updateUI(location);
 
@@ -343,17 +336,21 @@ public class WifiActivity extends AppCompatActivity {
 
     public void noFilter() {
         bssidList = new String[scanResults.size()];
+        wifiSB = new StringBuilder();
+
 
         for (int i = 0; i < scanResults.size(); i++) {
             availableWifiList[i] = ("SSID: " + scanResults.get(i).SSID
                     + "\nBSSID: " + scanResults.get(i).BSSID
                     + "\nRSSI: " + scanResults.get(i).level + "dBm");
+            wifiSB.append("," + scanResults.get(i).SSID + " " + scanResults.get(i).BSSID + " " + scanResults.get(i).level);
         }
         listWifi();
     }
 
     public void setFilter() {
         int count = 0;
+        wifiSB = new StringBuilder();
         for (int i = 0; i < scanResults.size(); i++) {
             String wifiSSID = scanResults.get(i).SSID;
             if (wifiSSID.equals("eduroam")) {
@@ -371,6 +368,7 @@ public class WifiActivity extends AppCompatActivity {
                 availableWifiList[count] = ("SSID: " + scanResults.get(i).SSID
                         + "\nBSSID: " + scanResults.get(i).BSSID
                         + "\nRSSI: " + scanResults.get(i).level + "dBm");
+                wifiSB.append("," + scanResults.get(i).SSID + " " + scanResults.get(i).BSSID + " " + scanResults.get(i).level);
                 count++;
             }
         }
@@ -407,13 +405,8 @@ public class WifiActivity extends AppCompatActivity {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
 
 
-            sb.append(latitude + "," + longitude + "," + x + "," + y +","
-                    + z + "," + timeStamp + "," + getSpinner + getRemark);
-
-            for (int i = 0; i < bssidList.length; i++) {
-                sb.append("," + scanResults.get(i).SSID + " " + scanResults.get(i).BSSID + " " + scanResults.get(i).level);
-            }
-            sb.append("\n");
+            sb.append(latitude + "," + longitude + ","
+                    + layoutData + "," + timeStamp + "," + getSpinner + getRemark + wifiSB + "\n");
 
             writer.append(sb.toString());
             writer.close();
