@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
+public class  MainActivity extends AppCompatActivity implements View.OnTouchListener {
 
 
 //    Coordinates Variables
@@ -106,9 +106,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     case R.id.I_WifiList:
                         Intent Wifi = new Intent(MainActivity.this, WifiActivity.class);
                         Wifi.putExtra("Extra_LayoutData", layoutData);
-                        Wifi.putExtra("originX", x1);
-                        Wifi.putExtra("originY" , y1);
-                        Wifi.putExtra("originZ" , z);
+                        Wifi.putExtra("x", String.valueOf(xDiff));
+                        Wifi.putExtra("y" , String.valueOf(yDiff));
+                        Wifi.putExtra("z" , String.valueOf(z));
                         startActivity(Wifi);
                         drawerLayout.closeDrawers();
                         break;

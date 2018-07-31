@@ -5,24 +5,25 @@
         <item
             android:id="@+id/I_Comment"
             android:icon="@drawable/ic_comment"
+            android:title="Comments"
             android:iconTint="@color/white"
             app:showAsAction="always"/>
 
-        <item
-            android:id="@+id/I_Eduroam"
-            android:title="Eduroam Only"
-            app:showAsAction="never"/>
+        <!--<item-->
+            <!--android:id="@+id/I_Eduroam"-->
+            <!--android:title="Eduroam Only"-->
+            <!--app:showAsAction="never"/>-->
 
 
-        <item
-            android:id="@+id/I_ListAvailable"
-            android:title="Available Wifi"
-            app:showAsAction="never"/>
+        <!--<item-->
+            <!--android:id="@+id/I_ListAvailable"-->
+            <!--android:title="Available Wifi"-->
+            <!--app:showAsAction="never"/>-->
 
-        <item
-            android:id="@+id/I_GPS"
-            android:title="Longitude and Latitude"
-            app:showAsAction="never"/>
+        <!--<item-->
+            <!--android:id="@+id/I_GPS"-->
+            <!--android:title="Longitude and Latitude"-->
+            <!--app:showAsAction="never"/>-->
 
 
 

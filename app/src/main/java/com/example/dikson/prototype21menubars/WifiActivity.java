@@ -24,12 +24,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.JsonWriter;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -37,11 +35,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,44 +53,50 @@ public class WifiActivity extends AppCompatActivity {
     //-----------------Toolbar---------------------------
     private DrawerLayout drawerLayout;
 
+    //Firebase
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference ref;
+
+
+
     //-------------------WIFI----------------------------
     WifiManager wifiManager;
-    String[] availableWifiList, bssidList;
+    String[] availableWifiList, bssidList, rssiList;
     String timeStamp;
     StringBuilder wifiSB;
     Handler handler;
     List<ScanResult> scanResults;
+    ArrayList<WifiFingerprints> cumulatedFingerprints;
     Runnable runnable;
     EditText input;
     Spinner spinner;
     boolean isEduroamFiltered = true;
+
 
     //------------------------Location-------------------------
     private final static int ALL_PERMISSIONS_RESULT = 101;
 
     LocationManager locationManager;
     Location location;
-
     double latitude, longitude;
-
     ArrayList<String> permissions;
     ArrayList<String> permissionsToRequest;
     ArrayList<String> permissionsRejected = new ArrayList<>();
 
     boolean canGetLocation = true;
-
     TextView LongitudeValue,LatitudeValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        ref = firebaseDatabase.getReference();
 
 //------------------------------------Toolbars--------------------------------------------------------
-//Enables the functions of the custom toolbars
+
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.T_WifiTools);
         setSupportActionBar(toolbar);
-//Setting the navigation menu button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -244,48 +250,54 @@ public class WifiActivity extends AppCompatActivity {
                     }
                 });
 
+                alertDialog.setNegativeButton("Write File", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //
+                    }
+                });
+
                 Spinner_items();
                 alertDialog.create().show();
                 return true;
 
-            case R.id.I_Eduroam:
-                isEduroamFiltered = true;
-                scanWifi();
-                return true;
-
-            case R.id.I_ListAvailable:
-                isEduroamFiltered = false;
-                scanWifi();
-                return true;
-
-            case R.id.I_GPS:
-                AlertDialog.Builder GPSDialog = new AlertDialog.Builder(this);
-                GPSDialog.setTitle("GPS Information");
-
-                LinearLayout layout_GPS = new LinearLayout(this);
-                layout_GPS.setOrientation(LinearLayout.VERTICAL);
-
-                TextView Longitude = new TextView(this);
-                layout_GPS.addView(Longitude);
-                Longitude.setText("Longitude:");
-
-                LongitudeValue = new TextView(this);
-                layout_GPS.addView(LongitudeValue);
-                LongitudeValue.setText(Double.toString(longitude));
-
-
-                TextView Latitude = new TextView(this);
-                layout_GPS.addView(Latitude);
-                Latitude.setText("Latitude:");
-
-                LatitudeValue = new TextView(this);
-                layout_GPS.addView(LatitudeValue);
-                LatitudeValue.setText(Double.toString(latitude));
-                GPSDialog.setView(layout_GPS);
-                GPSDialog.create().show();
-                return true;
+//            case R.id.I_Eduroam:
+//                isEduroamFiltered = true;
+//                scanWifi();
+//                return true;
+//
+//            case R.id.I_ListAvailable:
+//                isEduroamFiltered = false;
+//                scanWifi();
+//                return true;
+//
+//            case R.id.I_GPS:
+//                AlertDialog.Builder GPSDialog = new AlertDialog.Builder(this);
+//                GPSDialog.setTitle("GPS Information");
+//
+//                LinearLayout layout_GPS = new LinearLayout(this);
+//                layout_GPS.setOrientation(LinearLayout.VERTICAL);
+//
+//                TextView Longitude = new TextView(this);
+//                layout_GPS.addView(Longitude);
+//                Longitude.setText("Longitude:");
+//
+//                LongitudeValue = new TextView(this);
+//                layout_GPS.addView(LongitudeValue);
+//                LongitudeValue.setText(Double.toString(longitude));
+//
+//                TextView Latitude = new TextView(this);
+//                layout_GPS.addView(Latitude);
+//                Latitude.setText("Latitude:");
+//
+//                LatitudeValue = new TextView(this);
+//                layout_GPS.addView(LatitudeValue);
+//                LatitudeValue.setText(Double.toString(latitude));
+//                GPSDialog.setView(layout_GPS);
+//                GPSDialog.create().show();
+//                return true;
         }
-        updateUI(location);
+//        updateUI(location);
 
         return super.onOptionsItemSelected(item);
 
@@ -294,7 +306,7 @@ public class WifiActivity extends AppCompatActivity {
     //--------------------------------------------Populating the spinner view----------------------------------------------------------------------------
     public void Spinner_items() {
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.Conditions, android.R.layout.simple_spinner_item);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         spinner.setAdapter(arrayAdapter);
     }
 
@@ -314,7 +326,7 @@ public class WifiActivity extends AppCompatActivity {
                 availableWifiList = new String[scanResults.size()];
 
                 if (scanResults.size() == 0) {
-                    Toast.makeText(this, "No Access point", Toast.LENGTH_SHORT).show();
+
                 } else {
                     if (!isEduroamFiltered) {
                         noFilter();
@@ -360,7 +372,10 @@ public class WifiActivity extends AppCompatActivity {
 
         availableWifiList = new String[count];
         bssidList = new String[count];
+        rssiList = new  String[count];
+        cumulatedFingerprints = new ArrayList<>();
         count = 0;
+
 
         for (int i = 0; i < scanResults.size(); i++) {
             String wifiSSID = scanResults.get(i).SSID;
@@ -368,7 +383,11 @@ public class WifiActivity extends AppCompatActivity {
                 availableWifiList[count] = ("SSID: " + scanResults.get(i).SSID
                         + "\nBSSID: " + scanResults.get(i).BSSID
                         + "\nRSSI: " + scanResults.get(i).level + "dBm");
-                wifiSB.append("," + scanResults.get(i).SSID + " " + scanResults.get(i).BSSID + " " + scanResults.get(i).level);
+                bssidList[count] = scanResults.get(i).BSSID;
+                rssiList[count] = String.valueOf(scanResults.get(i).level);
+                wifiSB.append(","  + scanResults.get(i).BSSID + " ," + scanResults.get(i).level);
+                WifiFingerprints fingerprints = new WifiFingerprints(bssidList[count], rssiList[count]);
+                cumulatedFingerprints.add(fingerprints);
                 count++;
             }
         }
@@ -378,35 +397,70 @@ public class WifiActivity extends AppCompatActivity {
     //-------------------------------------------Saving Datas----------------------------------------------
     public void saveData() {
         //FYP BOOK
-        String getRemark;
-        String getSpinner;
 
-        String x, y, z;
-        EditText ET_x, ET_y, ET_z;
-        ET_x = findViewById(R.id.wifi_ET_X);
-        ET_y = findViewById(R.id.wifi_ET_Y);
-        ET_z = findViewById(R.id.wifi_ET_Z);
-        x = ET_x.getText().toString();
-        y = ET_y.getText().toString();
-        z = ET_z.getText().toString();
+        EditText ET_x = findViewById(R.id.wifi_ET_X);
+        EditText ET_y = findViewById(R.id.wifi_ET_Y);
+        EditText ET_z = findViewById(R.id.wifi_ET_Z);
+//        String x = ET_x.getText().toString();
+//        String y = ET_y.getText().toString();
+//        String z = ET_z.getText().toString();
 
         StringBuilder sb = new StringBuilder();
         String layoutData = getIntent().getStringExtra("Extra_LayoutData");
-//        String gpsData = getIntent().getStringExtra(" Extra_GpsData");
-        getRemark = input.getText().toString();
-        getSpinner = spinner.getSelectedItem().toString();
+        String x = getIntent().getStringExtra("x");
+        String y = getIntent().getStringExtra("y");
+        String z = getIntent().getStringExtra("z");
 
+        String getRemark = input.getText().toString();
+        String getSpinner = spinner.getSelectedItem().toString();
+        String tag = getSpinner + getRemark;
+
+        String pushKey = ref.push().getKey();
 
 
         try {
-            FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), "CollectedData.csv"));
+            FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), "CsvData.csv"));
+//            FileOutputStream fos2 = new FileOutputStream(new File(getFilesDir(), "JsonData.json"));
             File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            String filePath = file.getAbsolutePath() + "/CollectedData.csv";
+            String filePath = file.getAbsolutePath() + "/CsvData.csv";
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
 
+//            String filePath2 = file.getAbsolutePath() + "/JsonData.json";
+//            BufferedWriter writerJson = new BufferedWriter(new FileWriter(filePath2,true));
+//            JsonWriter jWriter = new JsonWriter(new FileWriter(filePath2, true));
+//            jWriter.setIndent("  ");
+//
+//            jWriter.beginObject();
+//            jWriter.name("x").value(x);
+//            jWriter.name("y").value(y);
+//            jWriter.name("z").value(z);
+//            jWriter.name("dataSet").value("kokwei-2");
+//            jWriter.name("timestamp").value(timeStamp);
+//            jWriter.name("tag").value(getSpinner+getRemark);
+//
+//            jWriter.name("dims");
+//            jWriter.beginObject();
+//            for(int i = 0; i <bssidList.length; i++){
+//                jWriter.name(bssidList[i]).value(rssiList[i]);
+//            }
+//            jWriter.endObject();
+//            jWriter.endObject();
+//            jWriter.close();
+//
+//            writerJson.append(",");
+//            writerJson.close();
 
-            sb.append(latitude + "," + longitude + ","
+
+            sb.append("kokwei-2" + ","
                     + layoutData + "," + timeStamp + "," + getSpinner + getRemark + wifiSB + "\n");
+
+            LocationInfo locationInfo = new LocationInfo(x, y, z, timeStamp, tag);
+            ref.child("kokwei-1").child(tag).child(pushKey).setValue(locationInfo);
+            for(int i = 0; i < rssiList.length; i ++){
+                ref.child("kokwei-1").child(tag).child(pushKey).child("dims").child(bssidList[i]).setValue(rssiList[i]);
+            }
+//            ref.child("kokwei-1").child("dims").setValue(cumulatedFingerprints);
+
 
             writer.append(sb.toString());
             writer.close();

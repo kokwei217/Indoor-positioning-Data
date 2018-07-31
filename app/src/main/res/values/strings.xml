@@ -4,20 +4,13 @@
     <string-array name="Conditions">
 
         <item> </item>
-        <item>Corridor A</item>
-        <item>Corridor B</item>
-        <item>Corridor C</item>
-        <item>F3B09</item>
-        <item>F3B08</item>
-        <item>F3B06</item>
-        <item>F3B04</item>
-        <item>F3B03</item>
-        <item>F3C09</item>
-        <item>F3C06</item>
-        <item>F3C08</item>
-        <item>F3C04</item>
-        <item>Toilet B</item>
-        <item>Toilet C</item>
+        <item>Corridor B-</item>
+
+        <item>F3B09-</item>
+        <item>F3B08-</item>
+        <item>F3B06-</item>
+        <item>F3B04-</item>
+
 
 
 
