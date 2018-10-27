@@ -2,29 +2,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <item
-            android:id="@+id/I_Comment"
-            android:icon="@drawable/ic_comment"
-            android:title="Comments"
-            android:iconTint="@color/white"
-            app:showAsAction="always"/>
+    <item
+        android:id="@+id/I_Comment"
+        android:icon="@drawable/ic_comment"
+        android:iconTint="@color/white"
+        android:title="Comments"
+        app:showAsAction="always" />
 
-        <!--<item-->
-            <!--android:id="@+id/I_Eduroam"-->
-            <!--android:title="Eduroam Only"-->
-            <!--app:showAsAction="never"/>-->
+    <item
+        android:id="@+id/I_Eduroam"
+        android:title="Eduroam Only"
+        app:showAsAction="never" />
 
 
-        <!--<item-->
-            <!--android:id="@+id/I_ListAvailable"-->
-            <!--android:title="Available Wifi"-->
-            <!--app:showAsAction="never"/>-->
+    <item
+        android:id="@+id/I_ListAvailable"
+        android:title="Available Wifi"
+        app:showAsAction="never" />
 
-        <!--<item-->
-            <!--android:id="@+id/I_GPS"-->
-            <!--android:title="Longitude and Latitude"-->
-            <!--app:showAsAction="never"/>-->
+    <item
+        android:id="@+id/I_GPS"
+        android:title="Longitude and Latitude"
+        app:showAsAction="never" />
 
+    <item
+        android:id="@+id/I_Query"
+        android:title="Query"
+        app:showAsAction="never"/>
 
 
 </menu>

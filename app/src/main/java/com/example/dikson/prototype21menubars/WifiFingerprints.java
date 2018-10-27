@@ -1,5 +1,7 @@
 package com.example.dikson.prototype21menubars;
 
+import android.util.Log;
+
 public class WifiFingerprints {
 //    public String x, y, z;
 //    public String timestamp, tag;
@@ -13,6 +15,5 @@ public class WifiFingerprints {
         this.bssid = bssid;
         this.rssi = rssi;
     }
-
 
 }
